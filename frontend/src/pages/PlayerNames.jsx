@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { Users, Play, AlertCircle } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
+
 
 export default function GameDashboard() {
   const [playerCount, setPlayerCount] = useState('');
@@ -8,6 +9,36 @@ export default function GameDashboard() {
   const [currentName, setCurrentName] = useState('');
   const [showTooltip, setShowTooltip] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const verifyUser = async () => {
+      const token = localStorage.getItem("token");
+      
+      if (!token) {
+        navigate("/login"); 
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:5000/api/auth/profile", {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
+        if (res.status === 401) {
+          localStorage.removeItem("token");
+          navigate("/login");
+          return;
+        }
+      } catch (error) {
+        console.error("Auth error:", error);
+        navigate("/login");
+      }
+    };
+
+    verifyUser();
+  }, []);
 
   const handlePlayerCountChange = (e) => {
     const count = parseInt(e.target.value) || 0;
