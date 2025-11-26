@@ -11,7 +11,7 @@
 // }
 
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import PlayerNames from "./pages/playernames.jsx";
 import RevealImposter from "./pages/RevealImposter.jsx";
 import Login from "./pages/Login.jsx";
@@ -20,7 +20,8 @@ import Signup from "./pages/Signup.jsx";
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup/>} />
       <Route path="/names" element={<PlayerNames/> } />
       <Route path="/reveal" element={<RevealImposter />} />

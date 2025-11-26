@@ -35,7 +35,7 @@ export default function LoginPage() {
   localStorage.setItem("token", data.token);
   localStorage.setItem("email", email); // Save email manually
 
-  alert("Login successful!");
+  // alert("Login successful!");
   navigate("/names");   // Go to PlayerNames.jsx
 
 } catch (err) {

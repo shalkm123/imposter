@@ -1,6 +1,7 @@
 import { useState, useEffect} from 'react';
 import { Users, Play, AlertCircle } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid'
 
 
 export default function GameDashboard() {
@@ -67,11 +68,45 @@ export default function GameDashboard() {
     return playerCount > 0 && playerNames.length === playerCount;
   };
 
-  const handleStartGame = () => {
-  if (isGameReady()) {
-    navigate("/reveal");
+ const handleStartGame = async () => {
+  if (!isGameReady()) return;
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    navigate("/login");
+    return;
+  }
+
+  try {
+    const gameId = uuidv4();
+
+    const res = await fetch("http://localhost:5000/api/game/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        gameId,
+        playerCount,
+        playerNames
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      localStorage.setItem("gameId", gameId);
+      navigate("/reveal");
+    } else {
+      console.error("Error creating game:", data.message);
+    }
+
+  } catch (error) {
+    console.error("Game creation error:", error);
   }
 };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 p-8">
