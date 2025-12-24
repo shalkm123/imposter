@@ -16,6 +16,7 @@ import PlayerNames from "./pages/PlayerNames.jsx";
 import RevealImposter from "./pages/RevealImposter.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
+import VerifyEmail from "./pages/VerifyEmail.jsx";
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
       <Route path="/signup" element={<Signup/>} />
       <Route path="/names" element={<PlayerNames/> } />
       <Route path="/reveal" element={<RevealImposter />} />
+      <Route path="/verify" element={<VerifyEmail />} />
     </Routes>
   );
 }

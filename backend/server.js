@@ -1,15 +1,29 @@
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// 👇 REQUIRED for ES Modules + Windows
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// 👇 FORCE load backend/.env
+dotenv.config({ path: path.join(__dirname, ".env") });
+
+console.log("ENV FILE:", path.join(__dirname, ".env"));
+console.log("RESEND_API_KEY exists:", !!process.env.RESEND_API_KEY);
+
+
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
+
 import mongoose from "mongoose";
 
 import authRoutes from "./routes/authRoutes.js";
 import gameRoutes from "./routes/gameRoutes.js";
 
 
-dotenv.config();
-// console.log("CWD:", process.cwd());
-// console.log("MONGO_URI:", process.env.MONGO_URI);
+
+
 
 const app = express();
 

@@ -31,11 +31,22 @@ export default function SignupPage() {
         return;
       }
 
-      alert("Signup successful!");
+      // ✅ IMPORTANT: backend must return emailVerifyId
+      const emailVerifyId = data?.emailVerifyId;
+      const normalizedEmail = data?.email || email;
 
-      // Navigate to login page
-      navigate("/");
+      if (!emailVerifyId) {
+        alert("Verification session missing. Please try signing up again.");
+        return;
+      }
 
+      // ✅ Go to verify page with verifyId (email optional for display)
+      navigate("/verify", {
+        state: {
+          email: normalizedEmail,
+          emailVerifyId: emailVerifyId,
+        },
+      });
     } catch (error) {
       console.error(error);
       alert("Something went wrong. Please try again.");
@@ -61,7 +72,6 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-blue-900 p-8 flex items-center justify-center">
       <div className="max-w-md w-full">
-
         {/* HEADER */}
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-white mb-4 tracking-tight">
@@ -75,7 +85,6 @@ export default function SignupPage() {
         {/* FORM */}
         <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl">
           <div className="space-y-6">
-
             {/* USERNAME */}
             <div>
               <label className="block text-purple-200 mb-3 text-lg font-medium flex items-center gap-2">
@@ -177,7 +186,6 @@ export default function SignupPage() {
               Login here
             </button>
           </div>
-
         </div>
       </div>
     </div>
