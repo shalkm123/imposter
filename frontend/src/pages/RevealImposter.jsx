@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Eye, EyeOff, Users, AlertCircle } from 'lucide-react';
+import * as emoji from "emoji-dictionary";
 //npm runimport { useNavigate } from "react-router-dom";
 
 export default function ImposterGame() {
@@ -47,6 +48,35 @@ useEffect(() => {
 
 
 
+  const commonWord = assignedWords.length ? assignedWords[0] : "";
+  const imposterWord =
+  assignedWords.length && imposterIndex !== null ? assignedWords[imposterIndex] : "";
+  const getEmoji = (word) => {
+  if (!word) return "🔤";
+
+  // try exact match
+  const exact = emoji.getUnicode(word.toLowerCase());
+  if (exact) return exact;
+
+  // fallback keywords (VERY IMPORTANT)
+  const keywordMap = {
+    fruit: "🍎",
+    animal: "🐾",
+    tool: "🔧",
+    vehicle: "🚗",
+    object: "📦",
+    abstract: "🌀",
+  };
+
+  for (const key in keywordMap) {
+    if (word.toLowerCase().includes(key)) {
+      return keywordMap[key];
+    }
+  }
+
+  return "🔤"; // final fallback
+};
+
 
 
  const getWordForPlayer = (index) => assignedWords[index];
@@ -73,8 +103,7 @@ useEffect(() => {
     setWordRevealed(false);
     setAllWordsRevealed(false);
     setShowResults(false);
-    const newImposter = Math.floor(Math.random() * playerNames.length);
-    setImposterIndex(newImposter);
+    
   };
 
   // Loading screen
@@ -120,7 +149,10 @@ useEffect(() => {
                           index === imposterIndex ? 'text-red-200' : 'text-green-200'
                         }`}
                       >
-                        {index === imposterIndex ? '🍎 Apple (Imposter!)' : '🥭 Mango'}
+                         {index === imposterIndex
+                            ? `${getEmoji(imposterWord)} ${imposterWord} (Imposter!)`
+                            : `${getEmoji(commonWord)} ${commonWord}`}
+
                       </div>
                     </div>
                     {index === imposterIndex && <div className="text-4xl">👿</div>}
@@ -224,8 +256,9 @@ useEffect(() => {
               <div className="mb-8">
                 <div className="text-purple-300 text-xl font-medium mb-4">Your Word Is:</div>
                 <div className="bg-gradient-to-r from-yellow-400 to-orange-400 text-gray-900 text-6xl font-bold py-8 px-12 rounded-2xl shadow-2xl inline-block">
-                  {getWordForPlayer(currentPlayerIndex) === 'Apple' ? '🍎' : '🥭'}{' '}
+                  {getEmoji(getWordForPlayer(currentPlayerIndex))}{' '}
                   {getWordForPlayer(currentPlayerIndex)}
+
                 </div>
               </div>
 

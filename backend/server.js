@@ -8,6 +8,8 @@ import gameRoutes from "./routes/gameRoutes.js";
 
 
 dotenv.config();
+// console.log("CWD:", process.cwd());
+// console.log("MONGO_URI:", process.env.MONGO_URI);
 
 const app = express();
 
