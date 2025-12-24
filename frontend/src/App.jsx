@@ -12,7 +12,7 @@
 
 
 import { Routes, Route, Navigate } from "react-router-dom";
-import PlayerNames from "./pages/playernames.jsx";
+import PlayerNames from "./pages/PlayerNames.jsx";
 import RevealImposter from "./pages/RevealImposter.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
